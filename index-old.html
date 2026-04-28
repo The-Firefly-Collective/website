@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Firefly Collective | Athens, GA</title>
+    <!-- Brand Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700;800&display=swap"
+      rel="stylesheet" />
+    <style>
+      :root {
+        --ff-bg: #1a1122;
+        --ff-surface: #241533;
+        --ff-accent: #ffa726;
+        --ff-text: #ffffff;
+        --ff-text-soft: rgba(255, 255, 255, 0.76);
+        --ff-text-muted: rgba(255, 255, 255, 0.5);
+        --ff-border: rgba(255, 255, 255, 0.1);
+        --ff-radius-xl: 32px;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", sans-serif;
+        background: var(--ff-bg);
+        color: var(--ff-text);
+        scroll-behavior: smooth;
+        overflow-x: hidden;
+      }
+      .ff-container {
+        width: min(1200px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      /* Navigation */
+      .ff-topbar {
+        position: sticky;
+        top: 0;
+        background: rgba(26, 17, 34, 0.95);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--ff-border);
+        z-index: 100;
+      }
+      .ff-topbar__inner {
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .ff-logo {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 800;
+        font-size: 18px;
+        letter-spacing: 0.1em;
+        cursor: pointer;
+        color: var(--ff-text);
+        text-decoration: none;
+      }
+      .ff-nav {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .ff-nav a {
+        color: var(--ff-text-soft);
+        text-decoration: none;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .ff-nav a:hover,
+      .ff-nav a.active {
+        color: var(--ff-accent);
+      }
+      .ff-nav-cta {
+        background: rgba(255, 167, 38, 0.1);
+        border: 1px solid var(--ff-accent);
+        color: var(--ff-accent) !important;
+        padding: 10px 22px;
+        border-radius: 999px;
+      }
+      .ff-nav-cta:hover {
+        background: var(--ff-accent) !important;
+        color: #1a1122 !important;
+      }
+
+      /* Mobile Nav */
+      /* Hamburger Button Styling */
+      .ff-menu-toggle {
+        display: none;
+        flex-direction: column;
+        gap: 6px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 1100; /* Above the nav overlay */
+      }
+
+      .ff-menu-toggle .bar {
+        width: 25px;
+        height: 2px;
+        background-color: var(--ff-accent);
+        transition: 0.3s;
+      }
+
+      /* Mobile Media Query */
+      @media (max-width: 992px) {
+        /* Adjust breakpoint as needed */
+        .ff-menu-toggle {
+          display: flex;
+        }
+
+        .ff-nav {
+          display: none; /* Hide by default on mobile */
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100vh;
+          background: var(--ff-bg, #1a1a1a); /* Matches your theme */
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 2rem;
+          z-index: 1000;
+        }
+
+        .ff-nav.is-active {
+          display: flex; /* Show when active */
+        }
+
+        /* Hamburger to X Animation */
+        .ff-menu-toggle.is-active .bar:nth-child(1) {
+          transform: translateY(8px) rotate(45deg);
+        }
+        .ff-menu-toggle.is-active .bar:nth-child(2) {
+          opacity: 0;
+        }
+        .ff-menu-toggle.is-active .bar:nth-child(3) {
+          transform: translateY(-8px) rotate(-45deg);
+        }
+      }
+      /* Transitions */
+      #page-content {
+        transition:
+          opacity 0.4s ease,
+          transform 0.4s ease;
+        padding: 60px 0;
+        min-height: 70vh;
+      }
+      .fade-out {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      .ff-hero h1 {
+        font-family: "Montserrat", sans-serif;
+        font-size: clamp(2.5rem, 5vw, 4.4rem);
+        line-height: 1.1;
+        margin: 0;
+      }
+      .ff-hero .sub {
+        font-size: 20px;
+        color: var(--ff-text-soft);
+        margin-top: 24px;
+        max-width: 800px;
+        line-height: 1.5;
+      }
+
+      /* Story Box */
+      .ff-story-box {
+        background: linear-gradient(145deg, rgba(255, 167, 38, 0.06), transparent);
+        border: 1px solid rgba(255, 167, 38, 0.15);
+        border-radius: var(--ff-radius-xl);
+        padding: 48px;
+        margin: 56px 0;
+        position: relative;
+      }
+      .ff-story-box p {
+        font-size: 18px;
+        line-height: 1.8;
+        color: var(--ff-text-soft);
+        font-style: italic;
+        margin-bottom: 24px;
+      }
+      .ff-story-box h3 {
+        color: var(--ff-accent);
+        margin-top: 0;
+        font-size: 24px;
+      }
+
+      /* Grids */
+      .ff-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 28px;
+        margin-top: 48px;
+      }
+      .ff-grid--full {
+        grid-template-columns: 1fr;
+      }
+      .ff-card {
+        background: var(--ff-surface);
+        border: 1px solid var(--ff-border);
+        border-radius: var(--ff-radius-xl);
+        padding: 36px;
+        transition: 0.3s;
+        display: flex;
+        flex-direction: column;
+      }
+      .ff-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--ff-accent);
+      }
+      .ff-card h3 {
+        color: var(--ff-accent);
+        margin-top: 0;
+        font-size: 24px;
+        font-family: "Montserrat", sans-serif;
+      }
+      .ff-card p {
+        font-size: 16px;
+        color: var(--ff-text-soft);
+        line-height: 1.6;
+        flex-grow: 1;
+      }
+
+      /* Accordion */
+      .ff-accordion {
+        margin: 32px 0;
+        border-top: 1px solid var(--ff-border);
+      }
+      .ff-accordion details {
+        border-bottom: 1px solid var(--ff-border);
+        padding: 24px 0;
+      }
+      .ff-accordion summary {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--ff-accent);
+        cursor: pointer;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .ff-accordion summary::after {
+        content: "+";
+        font-size: 24px;
+        transition: 0.3s;
+      }
+      .ff-accordion details[open] summary::after {
+        content: "-";
+        transform: rotate(90deg);
+      }
+      .ff-accordion-content {
+        padding-top: 24px;
+        color: var(--ff-text-soft);
+        line-height: 1.8;
+      }
+      .ff-accordion-content h4 {
+        color: var(--ff-accent);
+        margin-bottom: 8px;
+        font-size: 18px;
+      }
+
+      /* Extras */
+      .ff-tag {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--ff-accent);
+        opacity: 0.7;
+        margin-bottom: 12px;
+        font-weight: 700;
+      }
+      .ff-link {
+        margin-top: 24px;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--ff-accent);
+        text-decoration: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .ff-impact-list {
+        list-style: none;
+        padding: 0;
+        margin: 24px 0 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        border-top: 1px solid var(--ff-border);
+        padding-top: 24px;
+      }
+      .ff-impact-list li {
+        font-size: 14px;
+        color: var(--ff-text-soft);
+      }
+      .ff-impact-list span {
+        color: var(--ff-accent);
+        font-weight: bold;
+        font-size: 18px;
+        margin-right: 4px;
+      }
+      .ff-btn {
+        display: inline-block;
+        background: var(--ff-accent);
+        color: #1a1122;
+        padding: 14px 32px;
+        border-radius: 999px;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        font-family: inherit;
+        margin-top: 32px;
+        transition: 0.2s;
+      }
+      .ff-btn:hover {
+        opacity: 0.9;
+        transform: scale(1.02);
+      }
+      .ff-btn--outline {
+        background: transparent;
+        border: 1px solid var(--ff-border);
+        color: var(--ff-text);
+        margin-left: 12px;
+      }
+      .ff-form-container {
+        background: rgba(0, 0, 0, 0.15);
+        padding: 40px;
+        border-radius: var(--ff-radius-xl);
+        border: 1px dashed var(--ff-border);
+        margin-top: 40px;
+        text-align: center;
+      }
+
+      footer {
+        padding: 80px 0;
+        border-top: 1px solid var(--ff-border);
+        text-align: center;
+        color: var(--ff-text-muted);
+        font-size: 14px;
+      }
+
+      @media (max-width: 768px) {
+        .ff-nav {
+          display: none;
+        } /* Mobile menu needed later */
+        .ff-hero h1 {
+          font-size: 2.5rem;
+        }
+      }
+      /* Dashboard Grid */
+.ff-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+/* Glassmorphism Card Style */
+.ff-stat-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 4px solid var(--ff-accent); /* Gold accent stripe */
+  padding: 24px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.ff-stat-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-5px);
+  border-color: var(--ff-accent);
+}
+
+.ff-stat-card h3 {
+  color: var(--ff-accent);
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ff-stat-card p {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* Impact List Styling */
+.ff-impact-list {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 16px;
+}
+
+.ff-impact-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ff-accent-value {
+  color: #fff;
+  font-family: 'monospace'; /* Makes numbers look like a data readout */
+  font-weight: 700;
+  font-size: 1.1rem;
+  background: rgba(255, 215, 0, 0.1); /* Subtle gold glow */
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.ff-item-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+    </style>
+  </head>
+  <body>
+    <!-- MAIN HTML CONTAINTERS -->
+
+    <!-- BEGIN HEADER -->
+    <header class="ff-topbar">
+      <div class="ff-container ff-topbar__inner">
+        <a class="ff-logo" onclick="showPage('home')">✨ THE FIREFLY COLLECTIVE</a>
+
+        <button class="ff-menu-toggle" aria-label="Toggle Menu" onclick="toggleMenu()">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+
+        <nav class="ff-nav">
+          <a onclick="handleNav('home')" id="link-home">Home</a>
+          <a onclick="handleNav('about')" id="link-about">About</a>
+          <a onclick="handleNav('programs')" id="link-programs">Programs</a>
+          <a onclick="handleNav('impact')" id="link-impact">Impact</a>
+          <a onclick="handleNav('schedule')" id="link-schedule">Schedule</a>
+          <a onclick="handleNav('resources')" id="link-resources">Resources</a>
+          <a onclick="handleNav('involved')" id="link-involved" class="ff-nav-cta">Get Involved</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- BEGIN MAIN CONTAINER -->
+    <main class="ff-container">
+      <div id="page-content"></div>
+    </main>
+
+    <!-- BEGIN FOOTER -->
+    <footer class="ff-container">
+      <p>&copy; 2024 The Firefly Collective. Athens, Georgia.</p>
+      <p style="margin-top: 8px">Compassionate harm reduction support rooted in dignity, equity, and empowerment.</p>
+    </footer>
+
+    <script>
+      <!-- BEGIN PAGES CONTENT -->
+
+      const pages = {
+        <!-- HOME PAGE -->
+
+        home: {
+          title: "<br>No One Should Be Left <span style='color:var(--ff-accent)'><br>in the Dark.</span><br><br>",
+          sub: "The Firefly Collective works alongside our neighbors in Athens, Georgia to provide compassionate harm reduction support, life-saving resources, and community-centered care.",
+          cta: `
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button onclick="showPage('involved')" class="ff-btn">Join the Work</button>
+            <button onclick="showPage('schedule')" class="ff-btn ff-btn--outline">Find Outreach Hours</button>
+          </div>`,
+          cards: [
+            {
+              h: "Why This Matters",
+              p: "Across our communities, too many people face preventable harm, isolation, and barriers to care. We show up to change that with practical support."
+            },
+            {
+              h: "Dignity-First",
+              p: "Support should be grounded in the realities people navigate every day—without judgment or conditions."
+            },
+            {
+              h: "Peer-Rooted",
+              p: "Our work is led by those with lived experience and neighbors who care, ensuring our response is as human as the people we serve."
+            }
+          ]
+        },
+
+        <!-- ABOUT PAGE -->
+
+        about: {
+          title: "Who We <span style='color:var(--ff-accent)'>Are</span>",
+          sub: "A grassroots, peer-led collective in Athens, GA—people with lived experience, dedicated volunteers, and allies working together.",
+          story: `
+          <div class="ff-story-box">
+            <h3 style="color:var(--ff-accent); margin-bottom:20px;">Our Story: The Light That Empowers</h3>
+            <p>In the quiet stretches of North Georgia, there is a familiar magic that arrives with the dusk. It starts as a single, rhythmic pulse—a tiny spark against the deepening shadows. Then another appears, and another, until the darkness is no longer a void, but a canvas for a thousand small, persistent lights.</p>
+            <p><span style='color:var(--ff-accent)'><strong>This is the inspiration behind The Firefly Collective.</strong></span></p>
+            <p>We believe that even in the most overwhelming circumstances—the vast "darkness" of housing instability, systemic barriers, and substance use disorder—there is always a glimmer of good. To us, that glimmer is a speck of light inside every person, a testament to their inherent dignity and resilience.</p>
+          </div>
+          <div style="margin-top: 40px; padding: 40px; border-radius: var(--ff-radius-xl); background: rgba(255,255,255,0.03);">
+            <h3 style="color:var(--ff-accent)">A Note from Firefly</h3>
+            <p style="font-size: 1.1rem; line-height: 1.7;">Too often, people face harm, isolation, and barriers to care while also carrying the weight of stigma and judgment. Firefly exists to offer something different: support rooted in trust, respect, and community. We believe even small acts of compassion can help light the way forward.</p>
+          </div>`,
+          cards: [
+            {
+              h: "Respect",
+              p: "Every person has worth—we use person-first, non-stigmatizing language in all our work."
+            },
+            {
+              h: "Equity",
+              p: "We actively work to reach those left behind and underserved by traditional systems and care models."
+            },
+            {
+              h: "Empowerment",
+              p: "People make their own choices about their lives and health—we just make those choices safer."
+            },
+            {
+              h: "Collaboration",
+              p: "We glow brighter together. We build partnerships to expand harm reduction and peer support across Athens, GA."
+            }
+          ]
+        },
+
+        <!-- PROGRAMS PAGE -->
+
+        programs: {
+          title: "Practical Support. <span style='color:var(--ff-accent)'>Compassionate Care.</span>",
+          sub: "Meeting immediate needs and helping people stay safer, healthier, and more connected.",
+          cards: [
+            {
+              h: "Safer Use",
+              p: "We provide sterile supplies and confidential safe disposal resources to reduce bloodborne diseases like HIV and Hep C. Our low-threshold approach ensures people can access what they need, judgment-free, to stay as healthy as possible.",
+              linkText: "Find Outreach Hours →",
+              action: "schedule"
+            },
+            {
+              h: "Naloxone",
+              p: "We offer free naloxone kits and training to anyone in the community — participants, family, friends, and local businesses. When you’re trained, you’re empowered to save a life.",
+              linkText: "Request Training →",
+              action: "involved"
+            },
+            {
+              h: "Peer Support",
+              p: "Our team includes people with lived experience. This means we offer support, help with goal-setting, and act as a reliable, compassionate link to other resources — because we’ve been there, too.",
+              linkText: "Connect with a Peer →",
+              action: "involved"
+            }
+          ]
+        },
+
+        <!-- IMPACT PAGE -->
+
+        impact: {
+          title: "Small Lights. <span style='color:var(--ff-accent)'>Real Impact.</span>",
+          sub: "We track our work to stay accountable to our neighbors and our supporters. These numbers are updated in real time to reflect our impact as it happens ✨",
+          story: `
+          <div class="ff-story-box" style="margin-bottom: 24px;">
+            <h3>Every number represents a moment of <span style='color:var(--ff-accent)'>care.</span></h3>
+            <p>Firefly’s impact is measured in supplies shared, conversations held, volunteers mobilized, and trust built over time. Even when we are small, our work is real — and worth strengthening.</p>
+          </div>`,
+          cards: [
+            {
+              h: "Direct Care Stats",
+              p: "Your support translates into tangible care for our neighbors in Athens.",
+              impactList: [
+                ["$3.53", "One life-saving visit"],
+                ["$7.06", "One neighbor supported / month"]
+              ]
+            },
+            {
+              h: "Restock Capacity",
+              p: "Bulk purchasing allows us to stretch every dollar for maximum community safety.",
+              impactList: [
+                ["$175", "1 Month of Mobile Outreach"],
+                ["$352", "Full Community Restock"]
+              ]
+            },
+            {
+              h: "Operational Reach",
+              p: "One full restock supports approximately 100 individual encounters and sustains 2.5 months of consistent outreach."
+            },
+            {
+              h: "Volunteer Hours Contributed",
+              p: "Our work can not happen without our volunteers dedicated to helping our neighbors and making our community a little brighter",
+              impactList: [["100", "hours contributed"]]
+            }
+          ]
+        },
+
+        <!-- SCHEDULE PAGE -->
+        schedule: {
+          title: "Outreach <span style='color:var(--ff-accent)'>Schedule</span>",
+          sub: "Find us at these locations throughout the week for supplies, Naloxone, and support.",
+          story: `
+          <div class="ff-story-box" style="margin-bottom: 24px;">
+            <h3>Schedule</h3>
+            <div style="display: grid; gap: 24px;">
+                  <div><strong><span style='color:var(--ff-accent)'>First Wednesday</span> of Each Month:</strong><br> 5:00 PM – 6:00 PM (East Athens)</div>
+                  <div><strong><span style='color:var(--ff-accent)'>Last Wednesday</span> of Each Month:</strong><br> 5:00 PM – 6:00 PM (East Athens)</div>
+                  <div><strong>Every Thursday:</strong><br> 7:00 PM – 8:00 PM (Mobile Drops via Request. Contact in Advance to Schedule)</div>
+                </div>
+                <p style="margin-top: 32px; font-size: 14px; color: var(--ff-text-muted);">Note: Locations and times are subject to change based on weather and community needs. Follow us on Instagram for real-time updates.</p>
+          </div>
+          `,
+          cards: [
+          
+          ]
+        },
+
+        <!-- RESOURCES PAGE -->
+
+        resources: {
+          title: "Education & <span style='color:var(--ff-accent)'>Resources</span>",
+          sub: "Practical guidance and community support pathways to help you navigate harm reduction.",
+          cards: [
+            {
+              tag: "Philosophy",
+              h: "Harm Reduction 101",
+              p: "What is harm reduction? Explore our core philosophy and activist history.",
+              linkText: "Read Guide →",
+              fullContent: `
+              <div style="max-width:800px; margin:0 auto; text-align:left;">
+              <h2 style="color:var(--ff-accent)">Harm Reduction 101</h2>
+              <p>Harm reduction is a practical, compassionate approach that prioritizes safety, dignity, and individual choice. It means recognizing that people are the experts of their own lives.</p>
+              <div class="ff-accordion">
+                <details open><summary>Our Pillars</summary><div class="ff-accordion-content">Respect, Equity, Empowerment, and Collaboration.</div></details>
+              </div>
+              <button onclick="showPage('resources')" class="ff-btn">Back to Library</button>
+            </div>`
+            },
+            {
+              tag: "Prevention",
+              h: "Naloxone Basics",
+              p: "Recognize an overdose and learn the Firefly protocol for responding.",
+              linkText: "View Guide →",
+              fullContent: `<div style="max-width:800px; margin:0 auto; text-align:left;">
+              <h2 style="color:var(--ff-accent)">Naloxone Basics</h2>
+              <p>Overdose deaths are preventable. Knowing how to respond with presence and preparation can change everything.</p>
+              <button onclick="showPage('resources')" class="ff-btn">Back to Library</button>
+            </div>`
+            },
+            {
+              tag: "Safety",
+              h: "Athens Support Paths",
+              p: "Advantage Crisis: (800) 715-4225. Never Use Alone: (800) 484-3731.",
+              linkText: "Connect Now →",
+              action: "involved" // Fix: Redirects to involved/contact rather than a dead link
+            }
+          ]
+        },
+
+        <!-- INVOLVED PAGE -->
+
+        involved: {
+          layout: "full",
+          title: "Get <span style='color:var(--ff-accent)'>Involved</span>",
+          sub: "There are many ways to support your neighbors in Athens.",
+          support: "Volunteer, host a supply drive, or partner with us to expand harm reduction.",
+          cards: [
+            {
+              h: "Volunteer",
+              p: "Join our outreach team or help assemble life-saving kits. Your time and heart make our work possible.",
+              linkText: "Sign Up to Volunteer →",
+              fullContent: `
+              <div style="max-width:800px; margin:0 auto; text-align:left;">
+                <h2 style="color:var(--ff-accent); font-size:32px; margin-bottom:16px;">Join the Light: <span style="color:var(--ff-text)">Volunteer</span></h2>
+                <p style="font-size:18px; margin-bottom:32px;">We are a grassroots network powered by community heart. Whether you have two hours or twenty, you belong here.</p>
+                
+                <div class="ff-accordion">
+                  <details open>
+                    <summary>Outreach Team</summary>
+                    <div class="ff-accordion-content">
+                      <p>Be on the front lines in Athens. Outreach volunteers walk beside our neighbors, sharing kits, naloxone, and connection exactly where people are.</p>
+                    </div>
+                  </details>
+                  <details>
+                    <summary>Kit Assembly</summary>
+                    <div class="ff-accordion-content">
+                      <p>Help us ensure we never run out of supplies. Kit assembly happens in a communal, supportive environment where we build the tools for health equity.</p>
+                    </div>
+                  </details>
+                </div>
+
+                <div class="ff-form-container">
+                  <h3 style="margin-top:0;">Volunteer Interest Form</h3>
+                  <p style="font-size:14px; color:var(--ff-text-muted);">Paste your FluentForm shortcode or iframe below in the code.</p>
+                  <div style="background: rgba(255,255,255,0.05); height: 200px; display: grid; place-items: center; border-radius: 12px; border: 1px solid var(--ff-border);">
+                    FluentForm Placeholder
+                  </div>
+                </div>
+
+                <button onclick="showPage('involved')" class="ff-btn">Back to Get Involved</button>
+              </div>`
+            },
+            {
+              h: "Host a Drive",
+              p: "Gather essential supplies like socks, hygiene items, or water to support our outreach efforts."
+            },
+            {
+              h: "Donate",
+              p: "Your support helps us provide safer supplies, naloxone, and consistent outreach rooted in dignity.",
+              impactList: [
+                ["$25", "4 wound care kits"],
+                ["$50", "Safer supplies for 10 neighbors"],
+                ["$100", "2 weeks of gas for rural outreach drops"]
+              ]
+            },
+            {
+              h: "Partner",
+              p: "Are you a local business or nonprofit? Let’s collaborate to expand care in Athens.",
+              linkText: "Partner With Us →",
+              fullContent: `
+              <div style="max-width:800px; margin:0 auto; text-align:left;">
+                <h2 style="color:var(--ff-accent); font-size:32px; margin-bottom:16px;">Glow Brighter <span style="color:var(--ff-text)">Together</span></h2>
+                <p style="font-size:18px; margin-bottom:32px;">We believe in the power of local partnership. There are three primary ways your organization can support harm reduction in Athens:</p>
+                
+                <div class="ff-accordion">
+                  <details open>
+                    <summary>Outreach Sponsorship</summary>
+                    <div class="ff-accordion-content">
+                      <p>A sponsorship of <strong>$175</strong> fully covers one month of mobile outreach, including fuel and essential supplies. This ensures we can reach neighbors where transportation is a barrier.</p>
+                    </div>
+                  </details>
+                  <details>
+                    <summary>Host a Supply Bin</summary>
+                    <div class="ff-accordion-content">
+                      <p>Your business or church can serve as a drop-off point for high-need items like new socks, water bottles, and hygiene kits. We’ll provide the branded bin and handle the pickups.</p>
+                    </div>
+                  </details>
+                  <details>
+                    <summary>Educational Workshops</summary>
+                    <div class="ff-accordion-content">
+                      <p>We provide free Naloxone (Narcan) training for staff and community members. Hosting a workshop at your location empowers your team to be life-savers in the community.</p>
+                    </div>
+                  </details>
+                </div>
+
+                <div class="ff-form-container">
+                  <h3 style="margin-top:0;">Partnership Inquiry</h3>
+                  <p style="font-size:14px; color:var(--ff-text-muted);">[fluentform id="1"]</p>
+                </div>
+
+                <button onclick="showPage('involved')" class="ff-btn">Back to Get Involved</button>
+              </div>`
+            }
+          ]
+        }
+      };
+
+      <!-- END PAGES CONTENT -->
+
+      function showPage(key) {
+        const container = document.getElementById("page-content");
+        container.classList.add("fade-out");
+
+        setTimeout(() => {
+          const p = pages[key];
+          let gridClass = p.layout === "full" ? "ff-grid ff-grid--full" : "ff-grid";
+
+          container.innerHTML = `
+          <div class="ff-hero">
+            <h1>${p.title}</h1>
+            <p class="sub">${p.sub}</p>
+            ${p.cta || ""}
+          </div>
+          ${p.story || ""}
+          <div class="${gridClass}">
+            ${p.cards
+              .map(
+                (c, index) => `
+              <div class="ff-card">
+                ${c.tag ? `<div class="ff-tag">${c.tag}</div>` : ""}
+                <h3>${c.h}</h3>
+                <p>${c.p}</p>
+                ${c.impactList ? `<ul class="ff-impact-list">${c.impactList.map((i) => `<li><span>${i[0]}</span> = ${i[1]}</li>`).join("")}</ul>` : ""}
+                ${c.linkText ? `<a onclick="${c.fullContent ? `showDetail('${key}', ${index})` : `showPage('${c.action || key}')`}" class="ff-link" role="button" tabindex="0">${c.linkText}</a>` : ""}
+              </div>
+            `
+              )
+              .join("")}
+          </div>
+        `;
+
+          container.classList.remove("fade-out");
+
+          // Update Nav
+          document.querySelectorAll(".ff-nav a").forEach((a) => a.classList.remove("active"));
+          const activeLink = document.getElementById(`link-${key}`);
+          if (activeLink) activeLink.classList.add("active");
+
+          window.scrollTo(0, 0);
+        }, 400);
+      }
+
+      function showDetail(pageKey, cardIndex) {
+        const container = document.getElementById("page-content");
+        container.classList.add("fade-out");
+        setTimeout(() => {
+          container.innerHTML = pages[pageKey].cards[cardIndex].fullContent;
+          container.classList.remove("fade-out");
+          window.scrollTo(0, 0);
+        }, 400);
+      }
+
+      // Initial Load
+      window.onload = () => showPage("home");
+function renderImpactPage() {
+  const data = pages.impact;
+  const container = document.getElementById('page-impact');
+  if (!container) return;
+
+  const cardsHtml = data.cards.map(card => {
+    let listHtml = '';
+    if (card.impactList) {
+      listHtml = `<div class="ff-impact-list">
+        ${card.impactList.map(item => `
+          <div class="ff-impact-item">
+            <span class="ff-accent-value">${item[0]}</span>
+            <span class="ff-item-label">${item[1]}</span>
+          </div>
+        `).join('')}
+      </div>`;
+    }
+
+    return `
+      <div class="ff-stat-card">
+        <h3>${card.h}</h3>
+        <p>${card.p}</p>
+        ${listHtml}
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="ff-container">
+      <h1 class="ff-title">${data.title}</h1>
+      <p class="ff-subtitle">${data.sub}</p>
+      ${data.story}
+      <div class="ff-stat-grid">${cardsHtml}</div>
+    </div>
+  `;
+}
+    </script>
+    <script>
+      function toggleMenu() {
+        const menuToggle = document.querySelector(".ff-menu-toggle");
+        const navMenu = document.querySelector(".ff-nav");
+
+        menuToggle.classList.toggle("is-active");
+        navMenu.classList.toggle("is-active");
+
+        // Prevent background scrolling when menu is open
+        document.body.style.overflow = navMenu.classList.contains("is-active") ? "hidden" : "auto";
+      }
+
+      function handleNav(pageKey) {
+        // Call your existing SPA function
+        showPage(pageKey);
+
+        // Close the menu if we are on mobile
+        const navMenu = document.querySelector(".ff-nav");
+        if (navMenu.classList.contains("is-active")) {
+          toggleMenu();
+        }
+      }
+    </script>
+    <script>
+    const FALLBACK_STATS = { visits: 40, costPerVisit: "3.53" }; // Your safety net
+
+async function updateImpactStats() {
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_owYH4w5yghpplmh4CZ7IFSY6L0InArQ-kLcNMTQLcK-IZDXhFuV7CpbYVy6NNvzb/exec';
+  
+try {
+    const response = await fetch(SCRIPT_URL);
+    const liveData = await response.json();
+
+    // 1. Update the 'Direct Care Stats' card (index 0)
+    pages.impact.cards[0].impactList[0][0] = `$${liveData.costPerVisit}`;
+    
+    // 2. Add or update a row for total visits in the first card
+    pages.impact.cards[0].impactList[1][0] = liveData.visits;
+
+    // 3. Update 'Restock Capacity' (index 1) with the live total impact
+    pages.impact.cards[1].impactList[1][0] = `$${liveData.totalImpact}`;
+
+    // Now render the page with the fresh numbers
+    renderPage('impact');
+
+  } catch (err) {
+    console.error("Live data fetch failed:", err);
+    renderImpactPage(); // Fallback to static values if the sheet is down
+  }
+}
+      // Check if we have a previous successful fetch saved
+    const cachedData = localStorage.getItem('ff_impact_cache');
+    renderStats(cachedData ? JSON.parse(cachedData) : FALLBACK_STATS);
+}
+
+function renderStats(data) {
+  document.getElementById('visit-count').innerText = data.visits;
+  document.getElementById('cost-per-visit').innerText = data.costPerVisit;
+  document.getElementById('total-impact').innerText = data.totalImpact; // New line
+  document.getElementById('last-updated').innerText = data.lastUpdated;
+}
+    </script>
+  </body>
+</html>

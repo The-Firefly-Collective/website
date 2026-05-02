@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
     <title>The Firefly Collective | Athens, GA</title>
-    
+
     <style>
       :root {
         --ff-bg: #1a1122;
@@ -199,7 +199,7 @@
         max-width: 700px;
         margin: 0 auto 3rem;
       }
-      
+
       .ff-hero-content h1 {
     font-family: 'Montserrat', sans-serif;
     font-weight: 800; /* This is the heavy bold */
@@ -209,7 +209,7 @@
     margin-bottom: 1.5rem;
     color: var(--ff-text);
 }
-      
+
       .ff-hero-content h1 {
     font-family: 'Montserrat', sans-serif;
     font-weight: 800; /* This is the heavy bold */
@@ -479,9 +479,9 @@
 }
 
 .ff-hero-btns {
-    display: flex; 
-    gap: 16px; 
-    justify-content: center; 
+    display: flex;
+    gap: 16px;
+    justify-content: center;
     margin-top: 2rem;
 }
 
@@ -499,9 +499,9 @@
 }
     </style>
   </head>
-  
+
   <body>
-    
+
     <header>
       <div class="ff-container ff-topbar__inner">
         <a href="/" class="ff-brand-logo">
@@ -527,16 +527,17 @@
     <main class="ff-container">
       <div id="page-content"></div>
     </main>
-    
+
     <footer class="ff-container" align="center">
       <p>&copy; 2024 The Firefly Collective. Athens, Georgia.</p>
       <p style="margin-top: 8px">Compassionate harm reduction support rooted in dignity, equity, and empowerment.</p>
     </footer>
-    
+
     <script>
-      
+
+    let currentPage = "home";
     const pages = {
-      
+
       home: {
           title: `<div class="ff-hero-content">
                 <h1>No One Should Be Left in the <br><span>Dark.</span></h1>
@@ -564,7 +565,7 @@
             }
           ]
         },
-      
+
       about: {
           title: "Who We <span style='color:var(--ff-accent)'>Are</span>",
           sub: "A grassroots, peer-led collective in Athens, GA—people with lived experience, dedicated volunteers, and allies working together.",
@@ -595,7 +596,7 @@
             }
           ]
         },
-      
+
       programs: {
           title: "Practical Support. <span style='color:var(--ff-accent)'>Compassionate Care.</span>",
           sub: "Meeting immediate needs and helping people stay safer, healthier, and more connected.",
@@ -620,7 +621,7 @@
             }
           ]
         },
-      
+
       impact: {
           title: "Small Lights. <span style='color:var(--ff-accent)'>Real Impact.</span>",
           sub: "We track our work to stay accountable to our neighbors and our supporters. These numbers are updated in real time to reflect our impact as it happens ✨",
@@ -674,7 +675,7 @@
           `,
           cards: []
         },
-      
+
       resources: {
           title: "Education & <span style='color:var(--ff-accent)'>Resources</span>",
           sub: "Practical guidance and community support pathways to help you navigate harm reduction in Athens.",
@@ -689,7 +690,7 @@
               <div style="max-width:800px; margin:0 auto; text-align:left;">
                 <h2 style="color:var(--ff-accent); font-size:32px; margin-bottom:16px;">Harm Reduction 101</h2>
                 <p style="font-size:18px; margin-bottom:40px;">Harm reduction is both a life-saving toolkit and a social justice movement. Below, we explore the heart and the history of our work.</p>
-                
+
                 <div class="ff-accordion">
                   <details open>
                     <summary>Our Philosophy & Values</summary>
@@ -709,7 +710,7 @@
                       <p>We use person-first language—like "neighbor" or "person who uses drugs"—to honor the complexity and humanity of every individual.</p>
                     </div>
                   </details>
-                  
+
                   <details>
                     <summary>A Brief History of the Movement</summary>
                     <div class="ff-accordion-content">
@@ -725,7 +726,7 @@
                     </div>
                   </details>
                 </div>
-                
+
                 <button onclick="showPage('resources')" class="ff-btn">Back to Library</button>
               </div>`
             },
@@ -738,7 +739,7 @@
               <div style="max-width:800px; margin:0 auto; text-align:left;">
                 <h2 style="color:var(--ff-accent); font-size:32px; margin-bottom:16px;">Naloxone Basics: Saving a Life</h2>
                 <p style="font-size:18px; margin-bottom:40px;">Overdose deaths are preventable. Knowing how to respond with presence and preparation can change everything.</p>
-                
+
                 <div class="ff-accordion">
                   <details open>
                     <summary>Step 1: Recognizing an Overdose</summary>
@@ -778,7 +779,7 @@
                     </div>
                   </details>
                 </div>
-                
+
                 <button onclick="showPage('resources')" class="ff-btn">Back to Library</button>
               </div>`
             },
@@ -791,7 +792,7 @@
               <div style="max-width:800px; margin:0 auto; text-align:left;">
                 <h2 style="color:var(--ff-accent); font-size:32px; margin-bottom:16px;">Safer Use: Health, Dignity, & Autonomy</h2>
                 <p style="font-size:18px; margin-bottom:40px;">Safety is not a luxury—it is a fundamental right. We provide tools and knowledge to help you stay as healthy as possible.</p>
-                
+
                 <div class="ff-accordion">
                   <details open>
                     <summary>The Right to Health</summary>
@@ -800,7 +801,7 @@
                       <p>Access to new, sterile supplies is a primary defense against bloodborne pathogens like HIV and Hepatitis C, as well as bacterial infections like endocarditis and abscesses. You deserve tools that protect your health, without judgment or barriers.</p>
                     </div>
                   </details>
-                  
+
                   <details>
                     <summary>Firefly Kit Essentials</summary>
                     <div class="ff-accordion-content">
@@ -825,7 +826,7 @@
                     </div>
                   </details>
                 </div>
-                
+
                 <button onclick="showPage('resources')" class="ff-btn">Back to Library</button>
               </div>`
             },
@@ -837,7 +838,7 @@
             }
           ]
         },
-      
+
       involved: {
           layout: "full",
           title: "Get <span style='color:var(--ff-accent)'>Involved</span>",
@@ -852,7 +853,7 @@
               <div style="max-width:800px; margin:0 auto; text-align:left;">
                 <h2 style="color:var(--ff-accent); font-size:32px; margin-bottom:16px;">Join the Light: <span style="color:var(--ff-text)">Volunteer</span></h2>
                 <p style="font-size:18px; margin-bottom:32px;">We are a grassroots network powered by community heart. Whether you have two hours or twenty, you belong here.</p>
-                
+
                 <div class="ff-accordion">
                   <details open>
                     <summary>Outreach Team</summary>
@@ -872,7 +873,7 @@
                   <h3 style="margin-top:0;">Volunteer Interest Form</h3>
                   <p style="font-size:14px; color:var(--ff-text-muted);">Paste your FluentForm shortcode or iframe below in the code.</p>
                   <div style="background: rgba(255,255,255,0.05); height: 200px; display: grid; place-items: center; border-radius: 12px; border: 1px solid var(--ff-border);">
-                  
+
                     <form id="contactForm">
                     <input name="Name" type="text" placeholder="Your Name" required><br>
                     <input name="Email" type="email" placeholder="Your Email" required><br>
@@ -908,7 +909,7 @@
               <div style="max-width:800px; margin:0 auto; text-align:left;">
                 <h2 style="color:var(--ff-accent); font-size:32px; margin-bottom:16px;">Glow Brighter <span style="color:var(--ff-text)">Together</span></h2>
                 <p style="font-size:18px; margin-bottom:32px;">We believe in the power of local partnership. There are three primary ways your organization can support harm reduction in Athens:</p>
-                
+
                 <div class="ff-accordion">
                   <details open>
                     <summary>Outreach Sponsorship</summary>
@@ -942,39 +943,100 @@
         }
       };
 
-      function showPage(key) {
+      function showPage(key, skipUpdate = false) {
+        currentPage = key;
         const container = document.getElementById("page-content");
         container.classList.add("fade-out");
         setTimeout(() => {
           const p = pages[key];
-          let gridClass = p.layout === "full" ? "ff-grid ff-grid--full" : "ff-grid";
-          container.innerHTML = `
-          <div class="ff-hero">
-            <h1>${p.title}</h1>
-            <p class="sub">${p.sub}</p>
-            ${p.cta || ""}
-          </div>
-          ${p.story || ""}
-          <div class="${gridClass}">
-            ${p.cards
-              .map(
-                (c, index) => `
-              <div class="ff-card">
-                ${c.tag ? `<div class="ff-tag">${c.tag}</div>` : ""}
-                <h3>${c.h}</h3>
-                <p>${c.p}</p>
-                ${c.impactList ? `<ul class="ff-impact-list">${c.impactList.map((i) => `<li><span>${i[0]}</span> = ${i[1]}</li>`).join("")}</ul>` : ""}
-                ${c.linkText ? `<a onclick="${c.fullContent ? `showDetail('${key}', ${index})` : `showPage('${c.action || key}')`}" class="ff-link">${c.linkText}</a>` : ""}
-              </div>
-            `
-              )
-              .join("")}
-          </div>
-        `;
+          container.innerHTML = ""; // Clear content
+
+          // Hero Section
+          const hero = document.createElement("div");
+          hero.className = "ff-hero";
+
+          const h1 = document.createElement("h1");
+          h1.innerHTML = p.title; // Trusted: hardcoded HTML for styling
+          hero.appendChild(h1);
+
+          const sub = document.createElement("p");
+          sub.className = "sub";
+          sub.textContent = p.sub;
+          hero.appendChild(sub);
+
+          if (p.cta) {
+            const ctaWrap = document.createElement("div");
+            ctaWrap.innerHTML = p.cta; // Trusted: hardcoded HTML for buttons
+            hero.appendChild(ctaWrap);
+          }
+          container.appendChild(hero);
+
+          // Story Section
+          if (p.story) {
+            const storyWrap = document.createElement("div");
+            storyWrap.innerHTML = p.story; // Trusted: hardcoded HTML for layout
+            container.appendChild(storyWrap);
+          }
+
+          // Grid Section
+          const grid = document.createElement("div");
+          grid.className = p.layout === "full" ? "ff-grid ff-grid--full" : "ff-grid";
+
+          p.cards.forEach((c, index) => {
+            const card = document.createElement("div");
+            card.className = "ff-card";
+
+            if (c.tag) {
+              const tag = document.createElement("div");
+              tag.className = "ff-tag";
+              tag.textContent = c.tag;
+              card.appendChild(tag);
+            }
+
+            const h3 = document.createElement("h3");
+            h3.textContent = c.h;
+            card.appendChild(h3);
+
+            const pText = document.createElement("p");
+            pText.textContent = c.p;
+            card.appendChild(pText);
+
+            if (c.impactList) {
+              const ul = document.createElement("ul");
+              ul.className = "ff-impact-list";
+              c.impactList.forEach((i) => {
+                const li = document.createElement("li");
+                const span = document.createElement("span");
+                span.textContent = i[0]; // Potential dynamic data
+                li.appendChild(span);
+                li.appendChild(document.createTextNode(` = ${i[1]}`)); // Potential dynamic data
+                ul.appendChild(li);
+              });
+              card.appendChild(ul);
+            }
+
+            if (c.linkText) {
+              const a = document.createElement("a");
+              a.className = "ff-link";
+              a.textContent = c.linkText;
+              a.style.cursor = "pointer";
+              if (c.fullContent) {
+                a.onclick = () => showDetail(key, index);
+              } else {
+                a.onclick = () => showPage(c.action || key);
+              }
+              card.appendChild(a);
+            }
+            grid.appendChild(card);
+          });
+          container.appendChild(grid);
+
           container.classList.remove("fade-out");
           document.querySelectorAll(".ff-nav a").forEach((a) => a.classList.remove("active"));
-          document.getElementById(`link-${key}`).classList.add("active");
+          const activeLink = document.getElementById(`link-${key}`);
+          if (activeLink) activeLink.classList.add("active");
           window.scrollTo(0, 0);
+          if (key === "impact" && !skipUpdate) updateImpactStats();
         }, 400);
       }
 
@@ -983,14 +1045,17 @@
         container.classList.add("fade-out");
         setTimeout(() => {
           const content = pages[pageKey].cards[cardIndex].fullContent;
-          container.innerHTML = content;
+          container.innerHTML = ""; // Clear content
+          const contentWrap = document.createElement("div");
+          contentWrap.innerHTML = content; // Trusted: hardcoded HTML from fullContent
+          container.appendChild(contentWrap);
           container.classList.remove("fade-out");
           window.scrollTo(0, 0);
         }, 400);
       }
 
       const navMenu = document.querySelector(".ff-nav");
-      const menuBtn = document.querySelector(".menu-toggle"); // Make sure your button has this class
+      const menuBtn = document.querySelector(".ff-menu-toggle"); // Make sure your button has this class
 
       showPage("home");
       function handleNav(pageKey) {
@@ -1034,22 +1099,21 @@
           pages.impact.cards[1].impactList[1][0] = `$${liveData.totalImpact}`;
 
           // Now render the page with the fresh numbers
-          renderPage("impact");
+          if (currentPage === "impact") {
+              showPage("impact", true);
+          }
         } catch (err) {
           console.error("Live data fetch failed:", err);
-          renderPage("impact"); // Fallback to static values if the sheet is down
+          if (currentPage === "impact") {
+              showPage("impact", true);
+          }
         }
       }
       // Check if we have a previous successful fetch saved
       const cachedData = localStorage.getItem("ff_impact_cache");
-      renderStats(cachedData ? JSON.parse(cachedData) : FALLBACK_STATS);
 
-      function renderStats(data) {
-        document.getElementById("visit-count").innerText = data.visits;
-        document.getElementById("cost-per-visit").innerText = data.costPerVisit;
-        document.getElementById("total-impact").innerText = data.totalImpact; // New line
-        document.getElementById("last-updated").innerText = data.lastUpdated;
-      }
+
+
 
       //FORM SCRIPT
       const scriptURL =

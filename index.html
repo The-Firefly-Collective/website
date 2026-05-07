@@ -387,6 +387,7 @@
         .ff-hero h1 {
           font-size: 2.5rem;
         }
+       .ff-email-form;
       }
       /* Dashboard Grid */
       .ff-stat-grid {
@@ -473,6 +474,54 @@
         border: 2px solid var(--ff-accent) !important;
       }
 
+          .ff-eyebrow {
+      color: var(--ff-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .ff-eyebrow--soft { color: var(--ff-accent-soft); }
+
+          .ff-email-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .ff-email-form {
+      display: flex;
+      gap: 12px;
+      max-width: 620px;
+      margin: 28px auto 0;
+    }
+
+    .ff-email-input {
+      width: 100%;
+      min-height: 52px;
+      border-radius: 999px;
+      border: 1px solid var(--ff-border);
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      padding: 0 20px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .ff-email-input::placeholder { color: rgba(255, 255, 255, 0.38); }
+    .ff-email-input:focus { border-color: var(--ff-accent); }
+
+      .ff-submit {
+      background: var(--ff-accent);
+      color: #1a1122;
+      padding: 14px 24px;
+      box-shadow: 0 10px 40px rgba(255, 167, 38, 0.25);
+    }
+          .ff-submit:hover {
+      transform: translateY(-1px);
+    }
+
       #page-content {
         min-height: 80vh;
         padding-top: 60px;
@@ -509,6 +558,15 @@
     </main>
 
     <footer class="ff-container" align="center">
+                <div class="ff-email-wrap">
+            <div class="ff-eyebrow">Stay connected</div>
+            <h2 class="ff-title-lg">Join the Firefly community.</h2>
+            <p class="ff-subtitle" style="margin-left:auto; margin-right:auto;">Get updates on outreach, trainings, supply drives, and ways to support your neighbors in Athens.</p>
+            <form class="ff-email-form" action="#" method="post">
+              <input class="ff-email-input" type="email" name="email" placeholder="Enter your email" aria-label="Email address">
+              <button class="ff-submit" type="submit">Join Updates</button>
+            </form>
+          </div><br><br>
       <p>&copy; 2024 The Firefly Collective. Athens, Georgia.</p>
       <p style="margin-top: 8px">Compassionate harm reduction support rooted in dignity, equity, and empowerment.</p>
     </footer>

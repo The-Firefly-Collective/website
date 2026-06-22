@@ -1049,10 +1049,9 @@
       };
 
       let currentPage = "home";
-      let skipUpdate = false;
 
       function showPage(key, pushState = true) {
-        if (key === "impact" && !skipUpdate) {
+        if (key === "impact") {
           updateImpactStats();
         }
 
@@ -1120,10 +1119,13 @@
             if (c.impactList) {
               const ul = document.createElement("ul");
               ul.className = "ff-impact-list";
-              c.impactList.forEach((i) => {
+              c.impactList.forEach((i, itemIndex) => {
                 const li = document.createElement("li");
                 const span = document.createElement("span");
                 span.className = "ff-accent-value";
+                if (key === "impact") {
+                  span.id = `impact-stat-${index}-${itemIndex}`;
+                }
                 span.textContent = i[0];
                 li.appendChild(span);
                 li.appendChild(document.createTextNode(` = ${i[1]}`));
@@ -1203,46 +1205,83 @@
           }
         });
       });
-      const FALLBACK_STATS = { visits: 40, costPerVisit: "3.53" }; // Your safety net
+      const FALLBACK_STATS = { visits: 40, costPerVisit: "3.53", totalImpact: "352" };
+      const IMPACT_CACHE_KEY = "ff_impact_cache";
+      const IMPACT_TTL = 3 * 24 * 60 * 60 * 1000; // 3 days
 
       async function updateImpactStats() {
+        const cached = localStorage.getItem(IMPACT_CACHE_KEY);
+        if (cached) {
+          try {
+            const { timestamp } = JSON.parse(cached);
+            if (Date.now() - timestamp < IMPACT_TTL) {
+              return; // Cache is fresh
+            }
+          } catch (e) {
+            console.warn("Error parsing impact cache:", e);
+          }
+        }
+
         const SCRIPT_URL =
           "https://script.google.com/macros/s/AKfycby_owYH4w5yghpplmh4CZ7IFSY6L0InArQ-kLcNMTQLcK-IZDXhFuV7CpbYVy6NNvzb/exec";
 
         try {
-          const response = await fetch(SCRIPT_URL);
+          const response = await fetch(SCRIPT_URL, { cache: "force-cache" });
+          if (!response.ok) throw new Error("Network response was not ok");
           const liveData = await response.json();
 
-          // Update the cards in memory
-          pages.impact.cards[0].impactList[0][0] = liveData.visits;
-          pages.impact.cards[0].impactList[1][0] = `$${liveData.costPerVisit}`;
-          pages.impact.cards[1].impactList[1][0] = `$${liveData.totalImpact}`;
+          applyImpactStats(liveData);
 
-          // Cache for next load
-          localStorage.setItem("ff_impact_cache", JSON.stringify(liveData));
-
-          // If we're still on the impact page, re-render with skipUpdate to avoid loops
-          if (currentPage === "impact") {
-            skipUpdate = true;
-            showPage("impact");
-            setTimeout(() => {
-              skipUpdate = false;
-            }, 500);
-          }
+          // Cache with timestamp
+          localStorage.setItem(
+            IMPACT_CACHE_KEY,
+            JSON.stringify({
+              data: liveData,
+              timestamp: Date.now()
+            })
+          );
         } catch (err) {
           console.error("Live data fetch failed:", err);
+          // Use fallback if no cache exists
+          if (!localStorage.getItem(IMPACT_CACHE_KEY)) {
+            applyImpactStats(FALLBACK_STATS);
+          }
+        }
+      }
+
+      function applyImpactStats(liveData) {
+        const data = {
+          visits: liveData.visits || FALLBACK_STATS.visits,
+          costPerVisit: liveData.costPerVisit || FALLBACK_STATS.costPerVisit,
+          totalImpact: liveData.totalImpact || FALLBACK_STATS.totalImpact
+        };
+
+        // Update the cards in memory
+        pages.impact.cards[0].impactList[0][0] = data.visits;
+        pages.impact.cards[0].impactList[1][0] = `$${data.costPerVisit}`;
+        pages.impact.cards[1].impactList[1][0] = `$${data.totalImpact}`;
+
+        // Surgical update if on impact page
+        if (currentPage === "impact") {
+          const el1 = document.getElementById("impact-stat-0-0");
+          const el2 = document.getElementById("impact-stat-0-1");
+          const el3 = document.getElementById("impact-stat-1-1");
+
+          if (el1) el1.textContent = data.visits;
+          if (el2) el2.textContent = `$${data.costPerVisit}`;
+          if (el3) el3.textContent = `$${data.totalImpact}`;
         }
       }
 
       // Initialize with cache if available
-      const cachedData = localStorage.getItem("ff_impact_cache");
+      const cachedData = localStorage.getItem(IMPACT_CACHE_KEY);
       if (cachedData) {
         try {
-          const liveData = JSON.parse(cachedData);
-          pages.impact.cards[0].impactList[0][0] = liveData.visits;
-          pages.impact.cards[0].impactList[1][0] = `$${liveData.costPerVisit}`;
-          pages.impact.cards[1].impactList[1][0] = `$${liveData.totalImpact}`;
-        } catch (e) {}
+          const { data } = JSON.parse(cachedData);
+          applyImpactStats(data);
+        } catch (e) {
+          console.warn("Failed to load initial impact cache:", e);
+        }
       }
 
       //FORM SCRIPT

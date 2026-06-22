@@ -643,7 +643,88 @@
       <p style="margin-top: 8px">Compassionate harm reduction support rooted in dignity, equity, and empowerment.</p>
     </footer>
 
-    <script>     
+    <script>
+      /**
+       * Safely sets HTML content of an element by sanitizing it.
+       * This uses a whitelist of safe tags and attributes to prevent XSS.
+       */
+      function setSafeHTML(element, htmlString) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlString, "text/html");
+
+        // Simple sanitizer: whitelist of tags and attributes
+        const allowedTags = [
+          "BODY",
+          "H1",
+          "H2",
+          "H3",
+          "H4",
+          "H5",
+          "H6",
+          "P",
+          "SPAN",
+          "DIV",
+          "UL",
+          "LI",
+          "OL",
+          "STRONG",
+          "EM",
+          "B",
+          "I",
+          "BR",
+          "BUTTON",
+          "A",
+          "DETAILS",
+          "SUMMARY",
+          "BLOCKQUOTE",
+          "IMG"
+        ];
+        const allowedAttributes = ["style", "class", "onclick", "id", "open", "type", "name", "placeholder", "required", "src", "alt"];
+
+        function sanitize(node) {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            if (!allowedTags.includes(node.tagName)) {
+              const textNode = document.createTextNode(node.textContent);
+              node.parentNode.replaceChild(textNode, node);
+              return;
+            }
+
+            // Sanitize attributes
+            for (let i = node.attributes.length - 1; i >= 0; i--) {
+              const attr = node.attributes[i];
+              if (!allowedAttributes.includes(attr.name)) {
+                node.removeAttribute(attr.name);
+              } else if (attr.name === "onclick") {
+                // Only allow specific handleNav or showPage/showDetail calls with safe characters
+                const value = attr.value;
+                const allowedActions = [/^handleNav\(['"]?[a-zA-Z0-9_-]*['"]?\)$/, /^showPage\(['"]?[a-zA-Z0-9_-]*['"]?\)$/, /^showDetail\(['"]?[a-zA-Z0-9_-]*['"]?,\s*[0-9]+\)$/];
+                const isAllowed = allowedActions.some((re) => re.test(value));
+                if (!isAllowed) {
+                  node.removeAttribute(attr.name);
+                }
+              } else if (attr.name === "style") {
+                // Very basic style check - could be improved but sufficient for this hardcoded data
+                if (attr.value.includes("javascript:") || attr.value.includes("expression(")) {
+                  node.removeAttribute(attr.name);
+                }
+              }
+            }
+          }
+
+          // Copy childNodes to a fixed array to safely iterate while potentially modifying the DOM
+          const children = Array.from(node.childNodes);
+          for (const child of children) {
+            sanitize(child);
+          }
+        }
+
+        sanitize(doc.body);
+        element.innerHTML = "";
+        while (doc.body.firstChild) {
+          element.appendChild(doc.body.firstChild);
+        }
+      }
+
       const pages = {
         home: {
           title: "No One Should Be Left in the <br><span>Dark.</span>",
@@ -1073,7 +1154,7 @@
           hero.className = "ff-hero";
 
           const h1 = document.createElement("h1");
-          h1.innerHTML = p.title;
+          setSafeHTML(h1, p.title);
           hero.appendChild(h1);
 
           const sub = document.createElement("p");
@@ -1083,7 +1164,7 @@
 
           if (p.cta) {
             const ctaDiv = document.createElement("div");
-            ctaDiv.innerHTML = p.cta;
+            setSafeHTML(ctaDiv, p.cta);
             hero.appendChild(ctaDiv);
           }
 
@@ -1091,7 +1172,7 @@
 
           if (p.story) {
             const story = document.createElement("div");
-            story.innerHTML = p.story;
+            setSafeHTML(story, p.story);
             container.appendChild(story);
           }
 
@@ -1166,7 +1247,7 @@
         container.classList.add("fade-out");
         setTimeout(() => {
           const content = pages[pageKey].cards[cardIndex].fullContent;
-          container.innerHTML = content;
+          setSafeHTML(container, content);
           container.classList.remove("fade-out");
           window.scrollTo(0, 0);
         }, 400);
@@ -1284,17 +1365,25 @@
           .then((response) => response.json())
           .then((data) => {
             // FluentForms returns a 'success' boolean in the JSON response
+            statusDiv.textContent = "";
+            const statusSpan = document.createElement("span");
             if (data.success) {
-              statusDiv.innerHTML =
-                '<span style="color: #4CAF50;">Welcome to the collective! Check your inbox soon.</span>';
+              statusSpan.style.color = "#4CAF50";
+              statusSpan.textContent = "Welcome to the collective! Check your inbox soon.";
+              statusDiv.appendChild(statusSpan);
               form.reset(); // Clears the inputs
             } else {
-              statusDiv.innerHTML =
-                '<span style="color: #FF5252;">Oops! ' + (data.data.message || "Something went wrong.") + "</span>";
+              statusSpan.style.color = "#FF5252";
+              statusSpan.textContent = "Oops! " + (data.data.message || "Something went wrong.");
+              statusDiv.appendChild(statusSpan);
             }
           })
           .catch((error) => {
-            statusDiv.innerHTML = '<span style="color: #FF5252;">Connection error. Please try again later.</span>';
+            statusDiv.textContent = "";
+            const statusSpan = document.createElement("span");
+            statusSpan.style.color = "#FF5252";
+            statusSpan.textContent = "Connection error. Please try again later.";
+            statusDiv.appendChild(statusSpan);
           });
       });
     </script>

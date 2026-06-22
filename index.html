@@ -939,7 +939,8 @@
               tag: "Navigation",
               h: "Athens Support Paths",
               p: "Advantage Crisis Center: (800) 715-4225. Never Use Alone: 800-484-3731.",
-              linkText: "Connect Now →"
+              linkText: "Connect Now →",
+              action: "involved/contact"
             }
           ]
         },
@@ -1052,6 +1053,14 @@
       let skipUpdate = false;
 
       function showPage(key, pushState = true) {
+        // Handle sub-routes like involved/contact
+        if (key === "involved/contact") {
+          if (pushState) history.pushState({ page: key }, "", `#${key}`);
+          showPage("involved", false);
+          setTimeout(() => showDetail("involved", 0), 450);
+          return;
+        }
+
         if (key === "impact" && !skipUpdate) {
           updateImpactStats();
         }
@@ -1147,7 +1156,9 @@
           container.appendChild(grid);
           container.classList.remove("fade-out");
           document.querySelectorAll(".ff-nav a").forEach((a) => a.classList.remove("active"));
-          const activeLink = document.getElementById(`link-${key}`);
+          let navKey = key;
+          if (key.includes("/")) navKey = key.split("/")[0];
+          const activeLink = document.getElementById(`link-${navKey}`);
           if (activeLink) activeLink.classList.add("active");
           window.scrollTo(0, 0);
         }, 400);
@@ -1169,6 +1180,12 @@
           container.innerHTML = content;
           container.classList.remove("fade-out");
           window.scrollTo(0, 0);
+
+          // If the detail page has the contact form, re-bind it
+          const form = document.getElementById("contactForm");
+          if (form) {
+            form.addEventListener("submit", handleContactSubmit);
+          }
         }, 400);
       }
 
@@ -1248,24 +1265,29 @@
       //FORM SCRIPT
       const scriptURL =
         "https://script.google.com/macros/s/AKfycbwlt44Z89cnrMgCHFVl2kLtMhg9oYlKxkvXGBUUJphHgc3DiO8-2qRGDV3cD9lxymIn/exec";
-      const form = document.getElementById("contactForm");
-      const status = document.getElementById("statusMessage");
 
-      form.addEventListener("submit", (e) => {
+      function handleContactSubmit(e) {
         e.preventDefault();
-        status.textContent = "Sending...";
+        const form = e.target;
+        const status = document.getElementById("statusMessage");
+        if (status) status.textContent = "Sending...";
 
         // Use FormData to package the form inputs
         fetch(scriptURL, { method: "POST", body: new FormData(form) })
           .then((response) => {
-            status.textContent = "Message sent successfully!";
+            if (status) status.textContent = "Message sent successfully!";
             form.reset(); // Clear the form
           })
           .catch((error) => {
-            status.textContent = "Error: " + error.message;
+            if (status) status.textContent = "Error: " + error.message;
             console.error("Error!", error.message);
           });
-      });
+      }
+
+      const initialForm = document.getElementById("contactForm");
+      if (initialForm) {
+        initialForm.addEventListener("submit", handleContactSubmit);
+      }
     </script>
     <script>
       document.getElementById("ff-newsletter-form").addEventListener("submit", function (e) {

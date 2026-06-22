@@ -1242,7 +1242,9 @@
           pages.impact.cards[0].impactList[0][0] = liveData.visits;
           pages.impact.cards[0].impactList[1][0] = `$${liveData.costPerVisit}`;
           pages.impact.cards[1].impactList[1][0] = `$${liveData.totalImpact}`;
-        } catch (e) {}
+        } catch (e) {
+          console.warn("Failed to parse cached impact data:", e);
+        }
       }
 
       //FORM SCRIPT
@@ -1295,6 +1297,7 @@
           })
           .catch((error) => {
             statusDiv.innerHTML = '<span style="color: #FF5252;">Connection error. Please try again later.</span>';
+            console.error("Newsletter submission error:", error);
           });
       });
     </script>

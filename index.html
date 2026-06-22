@@ -1289,8 +1289,11 @@
                 '<span style="color: #4CAF50;">Welcome to the collective! Check your inbox soon.</span>';
               form.reset(); // Clears the inputs
             } else {
-              statusDiv.innerHTML =
-                '<span style="color: #FF5252;">Oops! ' + (data.data.message || "Something went wrong.") + "</span>";
+              const errorSpan = document.createElement("span");
+              errorSpan.style.color = "#FF5252";
+              errorSpan.textContent = "Oops! " + (data.data.message || "Something went wrong.");
+              statusDiv.innerHTML = "";
+              statusDiv.appendChild(errorSpan);
             }
           })
           .catch((error) => {

@@ -1146,7 +1146,7 @@
           });
           container.appendChild(grid);
           container.classList.remove("fade-out");
-          document.querySelectorAll(".ff-nav a").forEach((a) => a.classList.remove("active"));
+          navLinks.forEach((a) => a.classList.remove("active"));
           const activeLink = document.getElementById(`link-${key}`);
           if (activeLink) activeLink.classList.add("active");
           window.scrollTo(0, 0);
@@ -1174,6 +1174,7 @@
 
       const navMenu = document.querySelector(".ff-nav");
       const menuBtn = document.querySelector(".ff-menu-toggle");
+      const navLinks = document.querySelectorAll(".ff-nav a");
 
       // Initial load handling
       const initialPage = window.location.hash.replace("#", "") || "home";
@@ -1187,8 +1188,7 @@
         showPage(pageKey);
 
         // Close the menu if we are on mobile
-        const navMenu = document.querySelector(".ff-nav");
-        if (navMenu.classList.contains("is-active")) {
+        if (navMenu && navMenu.classList.contains("is-active")) {
           toggleMenu();
         }
       }
@@ -1196,9 +1196,9 @@
         navMenu.classList.toggle("is-active");
         if (menuBtn) menuBtn.classList.toggle("is-active");
       }
-      document.querySelectorAll(".ff-nav a").forEach((link) => {
+      navLinks.forEach((link) => {
         link.addEventListener("click", () => {
-          if (navMenu.classList.contains("is-active")) {
+          if (navMenu && navMenu.classList.contains("is-active")) {
             toggleMenu(); // Fixed the typo here!
           }
         });
